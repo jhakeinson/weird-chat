@@ -3,28 +3,28 @@
     <div class="card card-signin my-5">
       <div class="card-body">
         <h5 class="card-title text-center">Register</h5>
-        <form class="form-signin">
+        <form [formGroup]='regForm' class="form-signin" (ngSubmit)='signup()'>
           <!--EMAIL-->
           <div class="form-label-group">
-            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+            <input formControlName="email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
             <label for="inputEmail">Email address</label>
           </div>
 
           <!--USERNAME-->
           <div class="form-label-group">
-            <input type="text" id="inputUsername" class="form-control" placeholder="Username" required>
+            <input formControlName="username" type="text" id="inputUsername" class="form-control" placeholder="Username" minlength="3" required>
             <label for="inputUsername">Username</label>
           </div>
 
           <!--PASSWORD-->
           <div class="form-label-group">
-            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+            <input formControlName="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
             <label for="inputPassword">Password</label>
           </div>
 
           <!--CONFIRM PASSWORD-->
           <div class="form-label-group">
-            <input type="password" id="inputCPassword" class="form-control" placeholder="Password" required>
+            <input formControlName="cPassword" type="password" id="inputCPassword" class="form-control" placeholder="Password" required>
             <label for="inputCPassword">Confirm password</label>
           </div>
           <br>

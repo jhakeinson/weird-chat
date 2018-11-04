@@ -1,40 +1,50 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { auth } from 'firebase';
 import { Router } from '@angular/router';
+import { UserCredebtials } from './UserCredentials';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  authState: any = null;
+  private userCreds: UserCredebtials;
+  
+  authState: any;
 
   constructor(
     private afAuth: AngularFireAuth,
     private db: AngularFireDatabase,
     private router: Router
   ) { 
+    let self = this;
+  //  this.authState = 'Test 1';
     afAuth.auth.onAuthStateChanged((user) => {
+      console.log('inside onAuthStateChanged', this.authState);
       this.authState = user;
+      console.log('inside onAuthStateChanged 2', this.authState);
     });
   }
 
   get isAuthenticated(): boolean {
-    return this.authState !== null;
+    return <boolean> this.authState;
   }
 
   get currentUserId(): string {
     return this.isAuthenticated ? this.authState.uid : '';
   }
 
-  async emailSignUp(email: string, password: string) {
+  async emailSignUp(userCreds: UserCredebtials) {
     try {
-      const user = await this.afAuth.auth.createUserWithEmailAndPassword(email, password);
-      this.authState = user;
+      const auth = await this.afAuth.auth.createUserWithEmailAndPassword(userCreds.email, userCreds.password);
+      this.userCreds = userCreds;
+      this.authState = auth.user;
       this.updateUserData();
+
+      return Promise.resolve(auth.user);
     } catch (error) {
-      return console.log(error);
+      return Promise.reject(error);
     }
   }
 
@@ -42,13 +52,9 @@ export class AuthService {
     try {
       const auth = await this.afAuth.auth.signInWithEmailAndPassword(email, password);
       this.authState = auth.user;
-      console.log('DEBUG1: ', this.authState !== null);
-      console.log('DEBUG2: ', this.isAuthenticated);
-      this.updateUserData();
 
       return Promise.resolve(auth);
     } catch (error) {
-      console.log('service level error: ', error);
       return Promise.reject(error);
     }
   }
@@ -57,21 +63,26 @@ export class AuthService {
     return this.afAuth.auth.signOut()
       .then((user) => {
         this.router.navigate(['login']);
+
+        return Promise.resolve(user);
       })
-      .catch(error => console.log(error));
+      .catch(error => {
+        console.log('Log out opeeration failed: ${error}.')
+      
+        Promise.reject(error);
+      });
   }
 
   /* HELPERS */
   private updateUserData(): void {
     // Writes user name and email to realtime db
-    // useful if your app displays information about users or for admin features
     let userId: string = this.currentUserId;
 
     let path = `users/${userId}`; // Endpoint on firebase
     let data = {
       _id: userId,
-      email: this.authState.email,
-      username: this.authState.displayName
+      email: this.userCreds.email,
+      username: this.userCreds.username
     }
 
     this.db.object(path).update(data)

@@ -13,6 +13,7 @@ export class AuthGuardService implements CanActivate {
   ) { }
 
   canActivate(): boolean {
+    console.log('inside canActivate', this.auth.isAuthenticated);
     if(this.auth.isAuthenticated) {
       this.router.navigate(['chat']);
       return false;
