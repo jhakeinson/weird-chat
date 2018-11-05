@@ -26,7 +26,8 @@ export class LoginComponent implements OnInit {
         ]         
       ],
       password: ['', [
-          Validators.required
+          Validators.required,
+          Validators.minLength(6)
         ]
       ]
     });
@@ -34,7 +35,7 @@ export class LoginComponent implements OnInit {
     this.loginForm.valueChanges.subscribe(data => this.onValueChanged(data));
     this.onValueChanged(); // reset validation messages
   }
-
+  
   // Updates validation state on form changes.
   onValueChanged(data?: any) {
     if (!this.loginForm) { return; }
@@ -55,7 +56,7 @@ export class LoginComponent implements OnInit {
  formErrors = {
     'email': '',
     'password': '',
-    'invalidCredentials': ''
+    'invalidLogin': ''
   };
 
   validationMessages = {
@@ -65,6 +66,7 @@ export class LoginComponent implements OnInit {
     },
     'password': {
       'required':      'Password is required.',
+      'minlength':     'Password must be at least 6 characters.'
     }
   };
 
@@ -80,7 +82,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['chat']);
       })
       .catch(error => {
-        console.log('component level error', error);
+        this.formErrors.invalidLogin = 'Wrong email or password.';
       });
   }
 

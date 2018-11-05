@@ -20,11 +20,9 @@ export class AuthService {
     private router: Router
   ) { 
     let self = this;
-  //  this.authState = 'Test 1';
-    afAuth.auth.onAuthStateChanged((user) => {
-      console.log('inside onAuthStateChanged', this.authState);
-      this.authState = user;
-      console.log('inside onAuthStateChanged 2', this.authState);
+    
+    afAuth.user.subscribe(user => {
+      self.authState = user;
     });
   }
 

@@ -4,31 +4,47 @@
       <div class="card-body">
         <h5 class="card-title text-center">Register</h5>
         <form [formGroup]='regForm' class="form-signin" (ngSubmit)='signup()'>
+            <div class="alert alert-danger" *ngIf="formErrors.invalidReg">
+              {{formErrors.invalidReg}}
+            </div>
+
           <!--EMAIL-->
           <div class="form-label-group">
             <input formControlName="email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
             <label for="inputEmail">Email address</label>
+            <div class="badge badge-pill badge-danger" *ngIf="formErrors.email">
+              {{formErrors.email}}
+            </div>
           </div>
 
           <!--USERNAME-->
           <div class="form-label-group">
             <input formControlName="username" type="text" id="inputUsername" class="form-control" placeholder="Username" minlength="3" required>
             <label for="inputUsername">Username</label>
+            <div class="badge badge-pill badge-danger" *ngIf="formErrors.username">
+              {{formErrors.username}}
+            </div>
           </div>
 
           <!--PASSWORD-->
           <div class="form-label-group">
             <input formControlName="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
             <label for="inputPassword">Password</label>
+            <div class="badge badge-pill badge-danger" *ngIf="formErrors.password">
+              {{formErrors.password}}
+            </div>
           </div>
 
           <!--CONFIRM PASSWORD-->
           <div class="form-label-group">
             <input formControlName="cPassword" type="password" id="inputCPassword" class="form-control" placeholder="Password" required>
             <label for="inputCPassword">Confirm password</label>
+            <div class="badge badge-pill badge-danger" *ngIf="formErrors.cPassword">
+              {{formErrors.cPassword}}
+            </div>
           </div>
           <br>
-          <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Submit</button>
+          <button [disabled]="regForm.invalid" class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Submit</button>
           <br>
           <p>Already have an account? <strong><a routerLink="/login" >Log in</a></strong></p>
         </form>
