@@ -77,11 +77,32 @@ export class LoginComponent implements OnInit {
     this.auth.emailLogin(creds.email, creds.password)
       .then(user => {
         console.log('component level then', user);
-        this.router.navigate(['register']);
+        this.router.navigate(['chat']);
       })
       .catch(error => {
         console.log('component level error', error);
       });
-    // console.log('DEBUG', this.loginForm.get('email').errors);
+  }
+
+  doGoogleLogin() {
+    this.auth.googleLogin()
+      .then(user => {
+        console.log('component level then', user);
+        this.router.navigate(['chat']);
+      })
+      .catch(error => {
+        console.log('component level error', error);
+      });
+  }
+
+  doFacebookLogin() {
+    this.auth.facebookLogin()
+      .then(user => {
+        console.log('component level then', user);
+        this.router.navigate(['chat']);
+      })
+      .catch(error => {
+        console.log('component level error', error);
+      });
   }
 }

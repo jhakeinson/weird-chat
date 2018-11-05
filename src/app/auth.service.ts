@@ -3,6 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Router } from '@angular/router';
 import { UserCredebtials } from './UserCredentials';
+import * as firebase from 'firebase/app';
 
 
 @Injectable({
@@ -54,6 +55,39 @@ export class AuthService {
       this.authState = auth.user;
 
       return Promise.resolve(auth);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async googleLogin() {
+    try {
+      let provider = new firebase.auth.GoogleAuthProvider();
+      provider.addScope('profile');
+      let auth = await this.afAuth.auth.signInWithPopup(provider);
+      this.userCreds = new UserCredebtials();
+      this.userCreds.email = auth.user.email;
+      let username = auth.user.displayName.replace(/\s/g, '').toLowerCase();
+      this.userCreds.username = username;
+      this.updateUserData();
+
+      return Promise.resolve(auth.user);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async facebookLogin() {
+    try {
+      let provider = new firebase.auth.FacebookAuthProvider();
+      let auth = await this.afAuth.auth.signInWithPopup(provider);
+      this.userCreds = new UserCredebtials();
+      this.userCreds.email = auth.user.email;
+      let username = auth.user.displayName.replace(/\s/g, '').toLowerCase();
+      this.userCreds.username = username;
+      this.updateUserData();
+
+      return Promise.resolve(auth.user);
     } catch (error) {
       return Promise.reject(error);
     }

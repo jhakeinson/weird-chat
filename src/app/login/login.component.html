@@ -21,8 +21,10 @@
           </div>
           <br>
           <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign in</button>
-          <br>
-          <p>No account yet? <strong><a routerLink="/register" >Register</a></strong></p>
+          <hr class="my-4">
+          <button routerLink="/register" class="btn btn-lg btn-default btn-block text-uppercase" type="submit"><i class="fa fa-envelope mr-2"></i> Register with Email</button>
+          <button (click)="doGoogleLogin()" class="btn btn-lg btn-google btn-block text-uppercase" type="submit"><i class="fa fa-google mr-2"></i> Sign in with Google</button>
+          <button (click)="doFacebookLogin()" class="btn btn-lg btn-facebook btn-block text-uppercase" type="submit"><i class="fa fa-facebook-f mr-2"></i> Sign in with Facebook</button>
         </form>
       </div>
     </div>
