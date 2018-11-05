@@ -4,6 +4,7 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { Router } from '@angular/router';
 import { UserCredebtials } from './UserCredentials';
 import * as firebase from 'firebase/app';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -12,7 +13,7 @@ import * as firebase from 'firebase/app';
 export class AuthService {
   private userCreds: UserCredebtials;
   
-  authState: any;
+  authState: any = null;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -22,16 +23,22 @@ export class AuthService {
     let self = this;
     
     afAuth.user.subscribe(user => {
-      self.authState = user;
+      this.changeAuthState(user);
     });
   }
 
-  get isAuthenticated(): boolean {
-    return <boolean> this.authState;
+  get getAuthenticated(): Observable<firebase.User> {
+    return this.afAuth.user;
   }
 
   get currentUserId(): string {
-    return this.isAuthenticated ? this.authState.uid : '';
+    return this.authState ? this.authState.uid : '';
+  }
+
+  changeAuthState(authState: any) {
+    let self = this;
+
+    self.authState = authState;
   }
 
   async emailSignUp(userCreds: UserCredebtials) {
