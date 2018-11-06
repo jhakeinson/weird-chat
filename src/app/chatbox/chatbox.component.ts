@@ -17,7 +17,6 @@ export class ChatboxComponent implements OnInit {
     this.items = db.list('chats').valueChanges();
     this.items.subscribe(item => {
       console.log(item);
-      console.log(auth.isAuthenticated);
     });
   }
 
