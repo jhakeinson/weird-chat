@@ -89,7 +89,6 @@ export class LoginComponent implements OnInit {
   doGoogleLogin() {
     this.auth.googleLogin()
       .then(user => {
-        console.log('component level then', user);
         this.router.navigate(['chat']);
       })
       .catch(error => {
@@ -100,7 +99,6 @@ export class LoginComponent implements OnInit {
   doFacebookLogin() {
     this.auth.facebookLogin()
       .then(user => {
-        console.log('component level then', user);
         this.router.navigate(['chat']);
       })
       .catch(error => {

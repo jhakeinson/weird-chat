@@ -28,7 +28,7 @@ export class WeirdChatService {
         .once('value')
         .then(snapshot => {
           snapshot.forEach(chat => {
-            observer.next(chat.exportVal());
+            observer.next( chat.exportVal() );
           });
 
           observer.complete();
@@ -37,9 +37,9 @@ export class WeirdChatService {
         });
 
       return () => {
-        observer.unsubscribe()
+        observer.unsubscribe();
       };
-    }
+    });
   }
 
   getChatMessages(slug: string) {
