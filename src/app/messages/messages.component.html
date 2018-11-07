@@ -1,0 +1,11 @@
+<div class="msg_history">
+  <div *ngFor="let msg of messages" [class.received_msg]="!msg.isOwnedByActiveUser" [class.outgoing_msg]="msg.isOwnedByActiveUser">
+      <div class="msg_content">
+          <div class="sender_name">
+            <strong>@{{ msg.user?.username }}</strong>
+          </div>
+        <p>{{ msg.message }}</p>
+        <span class="time_date"> {{ msg.timestamp | amTimeAgo }}</span>
+      </div>
+  </div>
+</div>

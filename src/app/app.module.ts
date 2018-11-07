@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MomentModule } from 'angular2-moment';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
@@ -14,6 +15,8 @@ import { RegisterComponent } from './register/register.component';
 import { ChatboxComponent } from './chatbox/chatbox.component';
 import { AuthGuardService } from './services/auth-guard.service';
 import { AuthService } from './auth.service';
+import { MessagesComponent } from './messages/messages.component';
+import { ChatboxGuardService } from './services/chatbox-guard.service';
 
 /* Routers */
 const appRoutes: Routes = [
@@ -35,7 +38,12 @@ const appRoutes: Routes = [
   {
     path: 'chat',
     component: ChatboxComponent,
-    canActivate: [AuthGuardService]
+    canActivate: [ChatboxGuardService]
+  },
+  {
+    path: 'chat/:chatTitle',
+    component: ChatboxComponent,
+    canActivate: [ChatboxGuardService]
   },
   { 
     path: '**', 
@@ -49,6 +57,7 @@ const appRoutes: Routes = [
     LoginComponent,
     RegisterComponent,
     ChatboxComponent,
+    MessagesComponent,
   ],
   imports: [
     BrowserModule,
@@ -57,6 +66,7 @@ const appRoutes: Routes = [
     AngularFireDatabaseModule,
     FormsModule,
     ReactiveFormsModule,
+    MomentModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: false } // <-- debugging purposes only

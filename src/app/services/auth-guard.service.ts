@@ -15,9 +15,21 @@ export class AuthGuardService implements CanActivate {
     private auth: AuthService
   ) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable < boolean > | boolean {
+  canActivate(): Observable < boolean > | boolean {
 
     return this.auth.getAuthenticated.pipe(
+
+      map(user => {
+        if ( user )  {
+          this.auth.changeAuthState(user);
+          this.router.navigate(['chat']);
+          return false;
+        }
+
+        return true;
+      }));
+
+      /*
       map(user => {
         if ( user && (state.url !== '/chat') ) {
           this.auth.changeAuthState(user);
@@ -32,5 +44,6 @@ export class AuthGuardService implements CanActivate {
 
         return true;
       }));
+      */
   }
 }
