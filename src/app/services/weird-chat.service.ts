@@ -45,15 +45,15 @@ export class WeirdChatService {
   getChatMessages(slug: string) {
     return new Observable(observer => {
       this.getChat(slug).subscribe(chat => {
-        this.db.list('/messages/' + chat._id).valueChanges()
+        this.db.list('/messages/' + chat['_id']).valueChanges()
           .subscribe(msgs => {
             let messages = msgs.map(msg => {
-              this.db.object('/users/' + msg.userId).valueChanges()
+              this.db.object('/users/' + msg['userId']).valueChanges()
                 .subscribe(user => {
-                  msg.user = user;
+                  msg['user'] = user;
 
                   this.getActiveUser().subscribe(user => {
-                    msg.isOwnedByActiveUser = msg.user._id === user._id;
+                    msg['isOwnedByActiveUser'] = msg['user']['_id'] === user['_id'];
                   });
                 });
 
@@ -78,7 +78,7 @@ export class WeirdChatService {
   saveChatMessage(messageData: object, chatSlug: string) {
     let chatId: any;
     this.getChat(chatSlug).subscribe(chat => {
-      chatId = chat._id;
+      chatId = chat['_id'];
     }, error => { 
       console.log(error);
     }, () => {
